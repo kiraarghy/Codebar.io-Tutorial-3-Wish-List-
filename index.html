@@ -1,0 +1,96 @@
+<html>
+  <head>
+   <title>codebar.io - Exercise 1: Wish List</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script type="text/javascript" src="jquery.js"></script>
+
+  </head>
+  <body>
+    <header>
+      <img id="logo" src='https://raw.github.com/codebar/planner/master/app/assets/images/logo.png' width='200' />
+    </header>
+    <div id="container">
+      <h1>Wish List</h1>
+      <ol id="items">
+        <!-- Items will be added here -->
+      </ol>
+      <span class="total"></span>
+      <br/>
+      <input type="text" id="item"/>
+      <button id="add-to-list">Add to list</button>
+    </div>
+    <footer>
+      <div id="content"> by <a href="http://codebar.io">codebar</a> </div>
+    </footer>
+    <!--So there is an issue with the script running before the button rendered
+    in the html, in future possibly check this. Put script after the html button-->
+    <script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="script.js"></script>
+
+    <script>
+
+$('#add-to-list').click(function() {
+  var text = document.getElementById('item').value; 
+  //So you need to escape 'label pending' as otherwise it interprets label pending as a val rather than a string
+  //ALSO REFRESH YOUR STUFF DUMBASS
+  $('#items').append('<li>' + text + '<span class=\'label pending\'> Pending </span>' + '</li>');
+    $('#item').val(""); 
+      $('#item').focus();
+});
+
+$('#item').keypress(function(e) {
+        if(e.which == 13) {
+          var text = document.getElementById('item').value;
+            $('#items').append('<li>' + text + '<span class=\'label pending\'> Pending </span>' + '</li>');
+              $('#item').val(""); 
+                $('#item').focus();
+}});
+
+//here I was trying to trigger an element which hadn't been created yet so it tries to run at intilisation therefore doesn't run when triggered 
+
+//further to this, the appending and replacing didn't affect the final HTML, .html seems to solve this function a lot better
+
+//clicking on the element li will trigger this?
+//$('.label.pending').click(function() {
+  //var li_node = $(this).parent();
+    //$(li).append($('<span class=\'label success\'>Done!</span>'));
+      //$(li).remove($('<span class=\'label pending\'> Pending </span>'));
+      //console.log('butts');
+//});
+
+//var myThing = $('<span class=\'label pending\'> Pending </span>'). click()
+//$('<span class=\'pending\'> Pending </span>').on('click', function () {
+  //$(mySpan).append('<span class=\'success\'>Done!</span>');
+    //  $(mySpan).remove('<span class=\'pending\'> Pending </span>');
+  //      console.log('butts');
+//});
+//.on allows you to click on dynamic elements
+$(document.body).on('click','.label.pending', function() {
+//replaceWith() allows the replacement of the entire HTML element which is really what I wanted here and worked best 
+//the use of this here specifies that it is this label pending that I want to amend use this without quotes of anything 
+  
+  $(this).replaceWith('<span class=\'label success\'>Done!</span>');
+  //can be used to show what you just clicked on :)
+  //console.log(this);
+  //console.log('click');
+        });
+
+
+//Number of pending labels var pending = $('.pending').length;
+//Number of complete labels var complete = $('.complete').length;
+
+  var pending = $('.pending').length;
+  var complete = $('.success').length;
+
+function updateTotal() {
+  pending = $('.pending').length;
+  complete = $('.success').length;
+}
+
+//console.log('Pending: ' + pending + 'Complete ' + complete);
+
+</script> 
+  </body>
+
+</html>
